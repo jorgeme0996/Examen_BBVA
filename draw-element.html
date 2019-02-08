@@ -1,0 +1,107 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="draw-element">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      div#container {
+        display: flex;
+        justify-content: space-around;
+        border: 5px solid black;
+      }
+    </style>
+    <dom-repeat items=[[data]] as="person">
+      <template>
+        <div id="container">
+          <h2 id="[[person.age]]" style$="background-color: [[backGroundColor]];">Name: [[person.name]]</h2>
+          <h3>Age: [[person.age]]</h3>
+        </div>
+      </template>
+    </dom-repeat>
+    <h1>Winner: {{winner}}</h1>
+    <button on-click="go">Go!</button>
+  </template>
+
+  <script>
+    class DrawElement extends Polymer.Element {
+      static get is() { return 'draw-element'; }
+      static get properties() {
+        return {
+          data: {
+            type: Array,
+            value: [{
+                    name: 'Jorge',
+                    age: 80,
+                    contWin: 0
+                  },
+                  {
+                    name: 'Alex',
+                    age: 30,
+                    contWin: 0
+                  },
+                  {
+                    name: 'Maria',
+                    age: 19,
+                    contWin: 0
+                  }
+                  ]
+          }, 
+          winner: {
+            type: String,
+            value: ''
+          },
+          backGroundColor: {
+            type: String,
+            value: '',
+            computed: '_selectColor()'
+          }
+        };
+      }
+
+      _selectColor(){
+        for(let person of this.data){
+          if(person.age < 15) {
+            return 'blue';
+          } else if(person.age > 15 && person.age < 30){
+            return 'gray'
+          } else if(person.age > 31 && person.age < 40){
+            return 'green'
+          } else if(person.age > 41 && person.age < 60){
+            return 'orange'
+          }else if(person.age > 61){
+            return 'pink'
+          }
+        }
+        this.data = [...this.data];
+      }
+
+      go(){
+        const fakeArray = [];
+        const arrayOfPersons = [];
+        let arrayOfPerson = [];
+        const random = parseInt(Math.random()*(this.data.length));
+        for(let person of this.data){
+          arrayOfPerson = [];
+          for(let key in person){
+            arrayOfPerson.push(person[key]);
+          }
+          arrayOfPersons.push(arrayOfPerson.reverse());
+        }
+
+        const winner = arrayOfPersons[random][2];
+        for(let person of this.data){
+          if(winner === person.name){
+            person.contWin ++;
+            this.set('data', this.data);
+            console.log(person);
+          }
+        }
+        this.set('winner', winner);
+      }
+    }
+
+    window.customElements.define(DrawElement.is, DrawElement);
+  </script>
+</dom-module>

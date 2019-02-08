@@ -1,0 +1,74 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="frog-element">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      div#box {
+        border: 2px solid black;
+        height: 50px;
+        width: 50px;
+        text-align: center;
+      }
+      div#container {
+        display: flex;
+      }
+      div.frog {
+        color: white;
+        background-color: black;
+      }
+    </style>
+    <div id="container">
+      <dom-repeat items="[[line]]" as="box">
+        <template>
+            <div id="box" class$="[[box]]">
+              [[box]]
+            </div>
+        </template>
+      </dom-repeat>
+    </div>
+  </template>
+
+  <script>
+    class FrogElement extends Polymer.Element {
+      static get is() { return 'frog-element'; }
+      static get properties() {
+        return {
+          line: {
+            type: Array,
+            value: [null, null, 'frog']
+          },
+          moveTo: {
+            type: Number,
+            value: 2,
+            observer: 'moveFrog'
+          }
+        };
+      }
+
+      moveFrog(){
+        let newArray = new Array(this.line.length);
+        let actualPosition = this.line.indexOf('frog')+1;
+        for(let i = 0; i < this.moveTo; i++){
+          if(actualPosition < this.line.length){
+            actualPosition ++;
+          } else {
+            actualPosition = 0;
+          }
+        }
+        for(let i = 0; i < newArray.length; i++){
+          if(i === actualPosition){
+            newArray[i] = 'frog';
+          } else {
+            newArray[i] = null;
+          }
+        }
+        this.set('line', newArray);
+      }
+    }
+
+    window.customElements.define(FrogElement.is, FrogElement);
+  </script>
+</dom-module>

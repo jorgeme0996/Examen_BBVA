@@ -1,0 +1,33 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="container">
+
+    </div>
+</body>
+<script>
+numOfBtn = 40;
+const element = document.querySelector('#container');
+
+for(let i = 1;  i <= numOfBtn; i++){
+    const btn = document.createElement("BUTTON");
+    element.appendChild(btn);
+    btn.innerHTML = 'button #' + i;
+    btn.addEventListener('click', myFunction);
+    
+    if(i%2==0){
+        btn.style.backgroundColor = 'blue';
+    }
+}
+
+function myFunction(event){
+    const num = 'Hi from: ' + event.target.innerText;
+    alert(num);
+}
+</script>
+</html>
